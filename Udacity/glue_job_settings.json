@@ -1,0 +1,47 @@
+{
+  "common": {
+    "create_update_catalog": true,
+    "bookmark": "job-bookmark-disable",
+    "workers": 10,
+    "worker_type": "G.1X",
+    "max_retries": 0,
+    "enable_spark_ui": true
+  },
+  "jobs": [
+    {
+      "name": "customer_landing_to_trusted",
+      "input": "s3://bucket/landing/customer/",
+      "output": "s3://bucket/trusted/customer/"
+    },
+    {
+      "name": "accelerometer_landing_to_trusted",
+      "input": "s3://bucket/landing/accelerometer/",
+      "join": "s3://bucket/trusted/customer/",
+      "output": "s3://bucket/trusted/accelerometer/"
+    },
+    {
+      "name": "step_trainer_landing_to_trusted",
+      "input": "s3://bucket/landing/step_trainer/",
+      "output": "s3://bucket/trusted/step_trainer/"
+    },
+    {
+      "name": "customer_trusted_to_curated",
+      "input_customer": "s3://bucket/trusted/customer/",
+      "input_accel": "s3://bucket/trusted/accelerometer/",
+      "output": "s3://bucket/curated/customer/"
+    },
+    {
+      "name": "step_trainer_trusted_curated_join",
+      "input_step": "s3://bucket/trusted/step_trainer/",
+      "input_cust_curated": "s3://bucket/curated/customer/",
+      "output": "s3://bucket/curated/step_trainer/"
+    },
+    {
+      "name": "machine_learning_curated",
+      "input_step_trusted": "s3://bucket/trusted/step_trainer/",
+      "input_accel_trusted": "s3://bucket/trusted/accelerometer/",
+      "input_cust_curated": "s3://bucket/curated/customer/",
+      "output": "s3://bucket/curated/ml_ready/"
+    }
+  ]
+}
