@@ -1,7 +1,7 @@
 
 CREATE EXTERNAL TABLE IF NOT EXISTS stedi_db.accelerometer_landing (
   `user` string,
-  timeStamp bigint,
+  timestamp bigint,
   x double,
   y double,
   z double
